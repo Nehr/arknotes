@@ -92,7 +92,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed } from 'vue'
+import { defineComponent, ref, computed, watch } from 'vue'
 import { useStore } from 'vuex'
 import pkgjson from '../../package.json'
 import { useRoute } from "vue-router";
@@ -105,8 +105,8 @@ export default defineComponent({
 
   setup () {
     const $store = useStore();
-    const leftDrawerOpen = ref(false)
     const route = useRoute();
+    const leftDrawerOpen = ref(false)
 
     const savedNotes = localStorage.getItem('wsARKnotes');
     console.log('savedNotes', JSON.parse(savedNotes));
@@ -120,11 +120,14 @@ export default defineComponent({
         $store.commit('example/setMapList', val)
       }
     });
-    const current = ref(route);
-    console.log(current.value.name);
 
-    const title = ref(`${current.value.params ? `${current.value.name}: ${current.value.params.map}` : current.value.name}`);
-    console.log(title);
+    const current = computed(() => route);
+    const title = ref(`${Object.keys(current.value.params).length !== 0 ? `${current.value.name}: ${current.value.params.map}` : current.value.name}`);
+
+    watch(current.value, () => {
+      console.log('new route', current.value);
+      title.value = `${Object.keys(current.value.params).length !== 0 ? `${current.value.name}: ${current.value.params.map}` : current.value.name}`;
+    });
 
     return {
       version: pkgjson.version,

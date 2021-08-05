@@ -19,7 +19,7 @@
         >
           <q-item>
             <q-item-section>
-              <p class="text-h4">
+              <p class="text-h5 q-pl-sm">
                 {{ section.name }}
               </p>
             </q-item-section>
@@ -210,6 +210,10 @@ export default defineComponent({
 
   .ws-inner-item {
     padding: 0 0.5rem;
+  }
+
+  .ws-item-first {
+    width: 80%;
   }
 
   .isHidden {

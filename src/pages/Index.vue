@@ -1,6 +1,6 @@
 <template>
   <q-page class="flex flex-center">
-    <h1>ARK notes</h1>
+    <p class="text-h2 text-center">ARK<br>notes</p>
   </q-page>
 </template>
 
