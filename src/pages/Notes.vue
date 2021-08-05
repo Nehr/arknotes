@@ -3,7 +3,7 @@
     <div>
       <div class="q-mt-md q-mb-sm q-mx-md ws-info-bar">
         <div v-if="lastHiddenNote" class="bg-white">
-          Last pos:
+          Last pos:<br>
           {{ lastHiddenNoteLatLon.lat }}, {{ lastHiddenNoteLatLon.lon }}
         </div>
         <q-linear-progress stripe size="20px" :value="progress()" :color="progressColor()">
@@ -188,6 +188,7 @@ export default defineComponent({
       const itemData = sectionsObject.value[sect].array.find(x => x.id === item);
       console.log(itemData);
       toggleNote(item);
+      lastHiddenNote.value = item;
       if (!itemData.isHidden) {
         itemData.isHidden = true;
       } else {
@@ -264,7 +265,7 @@ export default defineComponent({
     const progressColor = ref(() => {
       const val = parseInt(parseFloat(progress.value()) * 100);
       const color = getColorFromPercent(val);
-      console.log(`${val} => ${color}`);
+      // console.log(`${val} => ${color}`);
       return color;
     });
 
@@ -274,38 +275,48 @@ export default defineComponent({
     }
 
     const getLastHiddenLonLat = last => {
-      for (const section in sectionsObject.value) {
-        console.log(`Searching for ${lastHiddenNote.value} in ${section}`);
-        const index = sectionsObject.value[section].array.findIndex(x => x.id === last);
-        console.log('index: ', index);
-        if (index > -1) {
-          const hit = sectionsObject.value[section].array[index];
-          return {
-            lon: hit.lon,
-            lat: hit.lat,
-          };
+      if (last) {
+        for (const section in sectionsObject.value) {
+          console.log(`Searching for ${lastHiddenNote.value} in ${section}`);
+          const index = sectionsObject.value[section].array.findIndex(x => x.id === last);
+          console.log('index: ', index);
+          if (index > -1) {
+            const hit = sectionsObject.value[section].array[index];
+            return {
+              lon: hit.lon,
+              lat: hit.lat,
+            };
+          }
         }
       }
+      console.log('could not find last in getLastHiddenLonLat', last);
       return false;
     }
 
-    const lastHiddenNote = computed(() => $store.state.example.lastProgress);
-    const lastHiddenNoteLatLon = ref(getLastHiddenLonLat(lastHiddenNote.value));
+    const lastHiddenNote = ref(false);
+    const lastHiddenNoteLatLon = computed(() => getLastHiddenLonLat(lastHiddenNote.value));
 
     const getDirectionFromLast = ref((lat, lon) => {
       let NS = '?';
       let EW = '?';
 
+      // console.log('lastHiddenNoteLatLon', lastHiddenNoteLatLon.value);
+      // console.log('lastHiddenNote', lastHiddenNote.value);
+
       if (lastHiddenNoteLatLon.value.lat < lat) {
         NS = 'S';
-      } else {
+      } else if (lastHiddenNoteLatLon.value.lat > lat) {
         NS = 'N';
+      } else {
+        NS = '?';
       }
 
       if (lastHiddenNoteLatLon.value.lon < lon) {
         EW = 'E';
-      } else {
+      } else if (lastHiddenNoteLatLon.value.lon > lon) {
         EW = 'W';
+      } else {
+        EW = '?';
       }
 
       return `${NS}/${EW}`;
