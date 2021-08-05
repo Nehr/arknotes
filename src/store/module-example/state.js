@@ -7,5 +7,7 @@ export default function () {
       'Aberration'
     ],
     hiddenNotes: [],
+    progress: {},
+    lastProgress: false,
   }
 }

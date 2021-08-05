@@ -11,6 +11,8 @@
           <li>Enter utgångspunkt för zeroVal</li>
           <li>Add map (canvas?) with lon/lat dots for each unfinished note</li>
           <li>Hide sections when all items are hidden</li>
+          <li>Relative position to last cleared note (N/S/E/W)</li>
+          <li>Progress bar</li>
         </ul>
       </p>
     </div>

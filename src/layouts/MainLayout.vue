@@ -61,7 +61,6 @@
             <q-item-section>
               <q-item-label>{{ map }}</q-item-label>
               <q-item-label caption>
-                Here are some notes
               </q-item-label>
             </q-item-section>
           </q-item>
