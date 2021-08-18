@@ -81,6 +81,23 @@
               </q-item-label>
             </q-item-section>
           </q-item>
+
+          <q-item
+            clickable
+            tag="a"
+            to="/grinder"
+          >
+            <q-item-section avatar>
+              <q-icon name="school" />
+            </q-item-section>
+
+            <q-item-section>
+              <q-item-label>S+ Grinder</q-item-label>
+              <q-item-label caption>
+                Color need calculations
+              </q-item-label>
+            </q-item-section>
+          </q-item>
       </q-list>
     </q-drawer>
 
