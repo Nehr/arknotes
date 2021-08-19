@@ -8,6 +8,7 @@ const routes = [
       { path: 'notes/:map', name: 'Notes', component: () => import('pages/Notes.vue') },
       { path: 'todo', name: 'To do', component: () => import('pages/ToDo.vue') },
       { path: 'grinder', name: 'Grinder calc', component: () => import('pages/SPlusGrinder.vue') },
+      { path: 'dinotaming', name: 'Dino taming', component: () => import('pages/DinoTaming.vue') },
     ]
   },
 

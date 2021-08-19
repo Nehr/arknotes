@@ -24,3 +24,13 @@ export const setHiddenNotes = (state, val) => {
 export const setProgressBar = (state, map, val) => {
   state.progress[map] = val;
 }
+
+export const toggleDinoTaming = (state, dino) => {
+  state.dinoTaming[dino] = !state.dinoTaming[dino];
+  localStorage.setItem('wsARKtamed', JSON.stringify(state.dinoTaming));
+}
+
+export const setDinoTames = (state, val) => {
+  console.log('setting dino tames', val);
+  state.dinoTaming = val;
+}

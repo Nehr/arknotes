@@ -98,6 +98,23 @@
               </q-item-label>
             </q-item-section>
           </q-item>
+
+          <q-item
+            clickable
+            tag="a"
+            to="/dinotaming"
+          >
+            <q-item-section avatar>
+              <q-icon name="school" />
+            </q-item-section>
+
+            <q-item-section>
+              <q-item-label>Dino taming</q-item-label>
+              <q-item-label caption>
+                Achievement checklist
+              </q-item-label>
+            </q-item-section>
+          </q-item>
       </q-list>
     </q-drawer>
 
@@ -128,6 +145,12 @@ export default defineComponent({
     console.log('savedNotes', JSON.parse(savedNotes));
     if (savedNotes) {
       $store.commit('example/setHiddenNotes', JSON.parse(savedNotes));
+    }
+
+    const savedDinoTames = localStorage.getItem('wsARKtamed');
+    console.log('savedDinoTames', JSON.parse(savedDinoTames));
+    if (savedDinoTames) {
+      $store.commit('example/setDinoTames', JSON.parse(savedDinoTames));
     }
 
     const mapList = computed({
