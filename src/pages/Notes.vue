@@ -102,6 +102,7 @@ import { data as theisland } from "../assets/ark_tables_textfile-TheIsland.js";
 
 export default defineComponent({
   name: "Notes",
+
   setup() {
     const route = useRoute();
     const $store = useStore();
@@ -127,7 +128,6 @@ export default defineComponent({
     };
 
     const list = mapData[current.value.toLowerCase()];
-    // console.log("list", list);
 
     const sectionsObject = ref({});
 
@@ -135,7 +135,6 @@ export default defineComponent({
       const sectionName = item.location
         .replace(/[^a-zA-Z0-9]/g, "")
         .toLowerCase();
-      // console.log(`${item.location} : ${sectionName}`);
       if (sectionName in sectionsObject.value) {
         sectionsObject.value[sectionName].array.push(item);
       } else {
@@ -146,8 +145,6 @@ export default defineComponent({
         };
       }
     });
-
-    // console.log("sections: ", sectionsObject);
 
     function calculateDistance(lat1, lon1, lat2, lon2) {
       const radlat1 = Math.PI * lat1/180;
@@ -173,7 +170,6 @@ export default defineComponent({
           const isHidden = hiddenNotes.value.find(x => x === item.id);
           if (isHidden) {
             item.isHidden = true;
-            // console.log('item is hidden', item);
           }
         });
 
@@ -265,12 +261,10 @@ export default defineComponent({
     const progressColor = ref(() => {
       const val = parseInt(parseFloat(progress.value()) * 100);
       const color = getColorFromPercent(val);
-      // console.log(`${val} => ${color}`);
       return color;
     });
 
     const isSectionHidden = () => {
-      // console.log('isSectionHidden called');
       return false;
     }
 
@@ -299,9 +293,6 @@ export default defineComponent({
     const getDirectionFromLast = ref((lat, lon) => {
       let NS = '?';
       let EW = '?';
-
-      // console.log('lastHiddenNoteLatLon', lastHiddenNoteLatLon.value);
-      // console.log('lastHiddenNote', lastHiddenNote.value);
 
       if (lastHiddenNoteLatLon.value.lat < lat) {
         NS = 'S';
@@ -372,6 +363,13 @@ export default defineComponent({
 
     .q-linear-progress {
       background-color: #fff;
+    }
+
+    .map {
+      width: 100px;
+      height: 100px;
+      margin-bottom: 1rem;
+      border: 1px solid #333;
     }
   }
 
