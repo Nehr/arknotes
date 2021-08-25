@@ -28,34 +28,34 @@
           :key="section.id"
           class="ws-noteslist"
         >
-          <q-item :class="isSectionHidden(section.id) ? 'isHidden' : ''">
+          <q-item :class="`ws-inner-item--title${isSectionHidden(section) && !editMode ? ' isHidden' : ''}`">
             <q-item-section>
-              <p class="text-h5 q-pl-sm">
+              <p class="text-h5 q-ma-none">
                 {{ section.name }}
               </p>
             </q-item-section>
           </q-item>
-          <q-item :class="isSectionHidden(section.id) ? 'isHidden' : ''">
+          <q-item :class="`ws-inner-item--content${isSectionHidden(section) && !editMode ? ' isHidden' : ''}`">
             <q-item-section>
               <q-list>
                 <q-item class="ws-inner-item">
-                  <q-item-section>
-                    <p class="text-h6">
+                  <q-item-section class="q-pa-xs">
+                    <p class="text-h6 q-ma-none">
                       Name / Note
                     </p>
                   </q-item-section>
                   <q-item-section side>
-                    <p class="text-h6">
+                    <p class="text-h6 q-ma-none">
                       Dir
                     </p>
                   </q-item-section>
                   <q-item-section side>
-                    <p class="text-h6">
+                    <p class="text-h6 q-ma-none">
                       Lat
                     </p>
                   </q-item-section>
                   <q-item-section side>
-                    <p class="text-h6">
+                    <p class="text-h6 q-ma-none">
                       Lon
                     </p>
                   </q-item-section>
@@ -67,7 +67,7 @@
                   clickable v-ripple
                   :class="`ws-inner-item ws-inner-item--focusable ${!editMode ? !item.isHidden ? '' : 'isHidden' : !item.isHidden ? '' : 'isHidden-EditMode'}`"
                 >
-                  <q-item-section>
+                  <q-item-section class="q-pa-xs">
                     {{ item.name }}, {{ item.note }}
                   </q-item-section>
                   <q-item-section side>
@@ -264,8 +264,17 @@ export default defineComponent({
       return color;
     });
 
-    const isSectionHidden = () => {
-      return false;
+    const isSectionHidden = section => {
+      const total = section.array.length;
+      console.log(`section: ${section.id}, length: ${total}`);
+      let amount = 0;
+      section.array.forEach(item => {
+        // console.log(item.isHidden);
+        if (item.isHidden) {
+          amount++;
+        }
+      });
+      return amount === total ? true : false;
     }
 
     const getLastHiddenLonLat = last => {
@@ -376,7 +385,27 @@ export default defineComponent({
   .ws-inner-item {
     padding: 0 0.5rem;
 
+    &--title {
+      background-color: #333;
+
+      p {
+        font-size: 1.75rem;
+        color: #fff;
+        text-transform: uppercase;
+        font-weight: 700;
+      }
+    }
+
+    &--content {
+      border: 1px solid #333;
+      margin-bottom: 1rem;
+    }
+
     &:not(.ws-inner-item--focusable) {
+      p, div {
+        font-size: 1.25rem;
+      }
+
       div.q-item__section {
         flex: 1 1 0;
 
@@ -387,6 +416,15 @@ export default defineComponent({
     }
 
     &.ws-inner-item--focusable {
+
+      &:nth-child(2n + 2) {
+        // background-color: rgba(100, 100, 100, 0.2);
+      }
+
+      p, div {
+        font-size: 1.25rem;
+      }
+
       div.q-item__section {
         flex: 1 1 0;
 
