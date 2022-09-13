@@ -119,6 +119,27 @@ export default defineComponent({
 
     const current = ref(route.params.map);
     // console.log("current", current.value);
+    const lastHiddenNote = ref(false);
+    const lastHiddenNoteLatLon = computed(() => getLastHiddenLonLat(lastHiddenNote.value));
+
+    const getLastHiddenLonLat = last => {
+      if (last) {
+        for (const section in sectionsObject.value) {
+          console.log(`Searching for ${lastHiddenNote.value} in ${section}`);
+          const index = sectionsObject.value[section].array.findIndex(x => x.id === last);
+          console.log('index: ', index);
+          if (index > -1) {
+            const hit = sectionsObject.value[section].array[index];
+            return {
+              lon: hit.lon,
+              lat: hit.lat,
+            };
+          }
+        }
+      }
+      console.log('could not find last in getLastHiddenLonLat', last);
+      return false;
+    }
 
     const mapData = {
       aberration,
@@ -162,6 +183,8 @@ export default defineComponent({
     for (const sect in sectionsObject.value) {
       if (sectionsObject.value[sect].array.length > 1) {
         sectionsObject.value[sect].array.forEach(item => {
+          const lastPosition = getLastHiddenLonLat();
+          console.log(lastPosition);
           const zeroVal = {
             lon: 0,
             lat: 0,
@@ -171,6 +194,7 @@ export default defineComponent({
           if (isHidden) {
             item.isHidden = true;
           }
+          console.log(item);
         });
 
         sectionsObject.value[sect].array.sort(function(a, b) { 
@@ -266,7 +290,7 @@ export default defineComponent({
 
     const isSectionHidden = section => {
       const total = section.array.length;
-      console.log(`section: ${section.id}, length: ${total}`);
+      // console.log(`section: ${section.id}, length: ${total}`);
       let amount = 0;
       section.array.forEach(item => {
         // console.log(item.isHidden);
@@ -276,28 +300,6 @@ export default defineComponent({
       });
       return amount === total ? true : false;
     }
-
-    const getLastHiddenLonLat = last => {
-      if (last) {
-        for (const section in sectionsObject.value) {
-          console.log(`Searching for ${lastHiddenNote.value} in ${section}`);
-          const index = sectionsObject.value[section].array.findIndex(x => x.id === last);
-          console.log('index: ', index);
-          if (index > -1) {
-            const hit = sectionsObject.value[section].array[index];
-            return {
-              lon: hit.lon,
-              lat: hit.lat,
-            };
-          }
-        }
-      }
-      console.log('could not find last in getLastHiddenLonLat', last);
-      return false;
-    }
-
-    const lastHiddenNote = ref(false);
-    const lastHiddenNoteLatLon = computed(() => getLastHiddenLonLat(lastHiddenNote.value));
 
     const getDirectionFromLast = ref((lat, lon) => {
       let NS = '?';
